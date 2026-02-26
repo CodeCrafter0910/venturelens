@@ -221,4 +221,4 @@ The dataset remains limited to the provided mock companies as per assignment req
 Author
 
 Rishabh Khanna
-VentureLens — VC Intelligence Interface
+VentureLens — VC Intelligence Interface.
