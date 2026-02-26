@@ -1,224 +1,223 @@
-VentureLens
+# VentureLens
+
+**VC Intelligence Interface — Discover, Enrich, and Organize Startups with AI**
+
+---
+
+## Overview
+
+VentureLens is a professional-grade venture intelligence interface built with **Next.js 16**, **TypeScript**, and **Tailwind CSS v4**. It allows users to explore a dataset of startups, perform **AI-powered live enrichment** on company websites, organize companies into custom lists, save and re-run filtered searches, and export structured data.
+
+The application follows a workflow-driven design: **discover → open profile → enrich → take action** (save, note, follow, export).
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 16 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS v4 + Custom CSS |
+| AI Enrichment | Groq AI (llama-3.1-8b-instant) |
+| Typography | Inter (Google Fonts) |
+| Notifications | Sonner (toast-based feedback) |
+| Persistence | localStorage (client-side) |
+| API | Server-side route (`/api/enrich`) |
+
+---
+
+## Features
+
+### 1. Dashboard (`/`)
+- Stats overview: Total Companies, Lists, Saved Searches, Enriched Companies
+- Quick action cards with gradient accents
+- Recent companies preview list
+- Keyboard shortcut hint (⌘K)
+
+### 2. Companies Explorer (`/companies`)
+- Full-text search by name and description
+- Industry filter (dynamic, derived from data)
+- Sort by Name, Industry, Location, or Stage
+- Pagination with 8 items per page
+- Company avatars, industry/stage badges
+- "Save Search" button with toast confirmation
+
+### 3. Company Profile (`/companies/[id]`)
+- **Tabbed interface**: Overview | Enrichment | Notes
+- **Overview tab**: Company details grid, signals timeline
+- **Enrichment tab**: AI-powered live enrichment with:
+  - Summary (1-2 sentences)
+  - "What They Do" bullets (3-6 items)
+  - Keywords (5-10)
+  - Derived signals (2-4 inferred from page structure)
+  - Sources with URLs and timestamps
+  - Loading skeleton animation
+  - Error state with retry button
+  - Cached results in localStorage
+- **Notes tab**: Textarea with save/persist per company
+- **Follow button**: Track companies you're interested in
+- **Add to List**: Quick dropdown to add company to any list
+
+### 4. Lists (`/lists`)
+- Create named lists (with duplicate prevention)
+- View companies in each list
+- Remove companies from lists
+- Delete lists
+- Export as **CSV** or **JSON** with full company data
+- Toast feedback on every action
+
+### 5. Saved Searches (`/saved`)
+- View all saved filter combinations
+- Re-run any saved search (navigates to `/companies` with params)
+- Delete saved searches
+- Shows saved date and filter details
+
+### 6. Global Search (⌘K / Ctrl+K)
+- Command palette-style search modal
+- Searches across company name, industry, and location
+- Click result to navigate to company profile
+- ESC to close
+
+---
+
+## Live Enrichment Architecture
+
+```
+User clicks "Enrich Company"
+        │
+        ▼
+Frontend POST /api/enrich { website }
+        │
+        ▼
+Server-side route (API keys NEVER exposed):
+  1. Fetch website HTML (AI Scrape)
+  2. Extract text, strip scripts/styles/nav/footer
+  3. Detect page signals from HTML structure:
+     - /careers → hiring signal
+     - /blog → content marketing
+     - /changelog → shipping updates
+     - /pricing → monetized product
+     - /docs → developer-focused
+     - /api → platform play
+  4. Send extracted text + signals to Gemini AI
+  5. Parse structured JSON response
+  6. Return: summary, whatTheyDo, keywords, signals, sources
+        │
+        ▼
+Frontend caches result in localStorage
+```
 
-VC Intelligence Interface
+**Fallback**: If `GROQ_API_KEY` is not set, the route falls back to basic HTML-based extraction (word frequency, meta description) instead of failing.
 
-Overview
+---
 
-VentureLens is a lightweight venture intelligence interface built using Next.js (App Router) and TypeScript.
+## Environment Variables
 
-The application simulates a VC research workflow, allowing users to explore a dataset of companies, enrich company information, organize companies into lists, and export structured data.
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `GROQ_API_KEY` | Yes (for AI enrichment) | Groq API key. Get one at [Groq Console](https://console.groq.com/keys) |
 
-The project focuses on clean architecture, structured state management, and professional SaaS-style UI design.
+Copy `.env.example` to `.env.local`:
 
-This implementation strictly follows the assignment requirements and uses the provided mock dataset.
+```bash
+cp .env.example .env.local
+```
 
-Tech Stack
+Then add your API key:
 
-Framework: Next.js (App Router)
+```
+GROQ_API_KEY=your_api_key_here
+```
 
-Language: TypeScript
+---
 
-Styling: Tailwind CSS
+## Setup & Running
 
-State Management: React Hooks
+### Prerequisites
+- Node.js 18+
+- npm
 
-Persistence: localStorage (client-side)
+### Install
 
-API: Custom API Route (/api/enrich)
+```bash
+cd venturelens
+npm install
+```
 
-Notifications: Toast-based feedback system
+### Development
 
-No external backend or database is used, as per assignment scope.
+```bash
+npm run dev
+```
 
-Core Features
-1. Companies Explorer
+Open [http://localhost:3000](http://localhost:3000)
 
-Search by company name
+### Production Build
 
-Filter by industry
+```bash
+npm run build
+npm start
+```
 
-Sort by name, industry, or location
+---
 
-Pagination (5 companies per page)
+## Deployment (Vercel)
 
-Dynamic routing for company profile pages
+1. Push repo to GitHub
+2. Import into [Vercel](https://vercel.com)
+3. Add environment variable: `GROQ_API_KEY`
+4. Deploy — Vercel auto-detects Next.js
 
-Clean, structured table layout
-
-The explorer operates strictly on the provided mock dataset.
-
-2. Company Profile
-
-Each company page includes:
-
-Overview section
-
-Notes section (persisted per company)
-
-Enrichment section (manual trigger)
-
-Add to List functionality
-
-Cached enrichment results (per company)
-
-Enrichment data is fetched only when the user explicitly clicks the "Enrich Company" button.
-
-3. Enrichment API
-
-API Route:
-
-/api/enrich
-
-The API:
-
-Accepts a company website URL
-
-Fetches metadata
-
-Extracts structured signals
-
-Returns:
-
-Summary
-
-Derived signals
-
-Source reference
-
-Timestamp
-
-Results are cached in localStorage for performance and persistence.
-
-4. Lists Management
-
-Users can:
-
-Create custom lists
-
-Add companies to lists
-
-Remove companies from lists
-
-Persist lists in localStorage
-
-Export lists in:
-
-CSV format
-
-JSON format
-
-Each list stores company IDs referencing the dataset.
-
-5. Saved Searches
-
-Users can save filtered search states.
-
-Each saved search stores:
-
-Search query
-
-Industry filter
-
-Sort selection
-
-Saved searches restore state via URL query parameters.
-
-6. Dashboard
-
-The homepage functions as a lightweight analytics dashboard displaying:
-
-Total Companies
-
-Total Lists
-
-Saved Searches
-
-Enriched Companies
-
-Quick navigation actions
-
-Designed with a SaaS-style layout using Sidebar + Topbar structure.
-
-UI Architecture
-
-The UI follows a structured layout:
-
-Persistent Sidebar navigation
-
-Dynamic Topbar
-
-Card-based content containers
-
-Consistent spacing and typography
-
-Toast notifications for user actions
-
-Responsive layout
-
-Styling is implemented entirely using Tailwind CSS.
+---
 
 ## Folder Structure
 
 ```
-src/
-├── app/
-│   ├── page.tsx
-│   ├── companies/
-│   │   ├── page.tsx
-│   │   └── [id]/page.tsx
-│   ├── lists/
-│   │   └── page.tsx
-│   ├── saved/
-│   │   └── page.tsx
-│   └── api/
-│       └── enrich/
-│           └── route.ts
-│
-├── components/
-│   ├── Sidebar.tsx
-│   ├── Topbar.tsx
-│   ├── CompanyProfileClient.tsx
-│   └── Card.tsx
-│
-└── lib/
-    └── mockCompanies.ts
+venturelens/
+├── .env.example              # Environment variables template
+├── package.json
+├── next.config.ts
+├── tsconfig.json
+└── src/
+    ├── app/
+    │   ├── layout.tsx          # Root layout (sidebar + topbar + toaster)
+    │   ├── page.tsx            # Dashboard
+    │   ├── globals.css         # Design system (Inter font, animations, badges, etc.)
+    │   ├── companies/
+    │   │   ├── page.tsx        # Companies explorer (search + filter + table)
+    │   │   └── [id]/page.tsx   # Company profile (server component)
+    │   ├── lists/
+    │   │   └── page.tsx        # Lists management
+    │   ├── saved/
+    │   │   └── page.tsx        # Saved searches
+    │   └── api/
+    │       └── enrich/
+    │           └── route.ts    # Server-side AI enrichment endpoint
+    ├── components/
+    │   ├── Sidebar.tsx         # Navigation sidebar (icons, mobile-responsive)
+    │   ├── Topbar.tsx          # Top bar with global search modal (⌘K)
+    │   └── CompanyProfileClient.tsx  # Company profile (tabs, enrichment, notes)
+    └── lib/
+        └── mockCompanies.ts    # Seed dataset (15 real startups)
 ```
-Design Decisions
 
-Used the provided mock dataset as required.
+---
 
-Kept enrichment logic within a controlled API route.
+## Design Decisions
 
-Separated server and client components appropriately.
+- **Inter font** for premium SaaS typography
+- **Indigo/cyan/emerald** color palette — professional and consistent
+- **Staggered fade-in animations** for polished feel
+- **Skeleton loading** during enrichment for perceived speed
+- **Toast notifications** on every user action (save, export, enrich, follow)
+- **Badge system** for industry, stage, and status indicators
+- **Card-based layout** with subtle shadows and hover effects
+- **Mobile-responsive** sidebar with hamburger menu + overlay
 
-Used localStorage for prototype-level persistence.
+---
 
-Maintained clear separation between UI components and data logic.
+## Author
 
-Avoided unnecessary dependencies.
-
-Running the Project
-
-Install dependencies:
-
-npm install
-
-Run development server:
-
-npm run dev
-
-Open:
-
-http://localhost:3000
-Notes
-
-The application is intentionally frontend-focused.
-
-Data persistence is localStorage-based.
-
-The dataset remains limited to the provided mock companies as per assignment requirements.
-
-Author
-
-Rishabh Khanna
-VentureLens — VC Intelligence Interface.
+**Rishabh Khanna**
+VentureLens — VC Intelligence Interface

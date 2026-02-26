@@ -4,8 +4,9 @@ import Topbar from "@/components/Topbar"
 import { Toaster } from "sonner"
 
 export const metadata = {
-  title: "VentureLens",
-  description: "VC Intelligence Interface",
+  title: "VentureLens — VC Intelligence Interface",
+  description:
+    "Discover, enrich, and organize startup intelligence with AI-powered insights.",
 }
 
 export default function RootLayout({
@@ -15,25 +16,21 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-gray-100 text-slate-900 antialiased">
+      <body className="antialiased">
         <div className="flex min-h-screen">
 
           {/* Sidebar */}
-          <aside className="border-r border-gray-200 bg-white">
-            <Sidebar />
-          </aside>
+          <Sidebar />
 
           {/* Main Area */}
-          <div className="flex-1 flex flex-col">
+          <div className="flex-1 flex flex-col min-w-0">
 
             {/* Topbar */}
-            <div className="border-b border-gray-200 bg-white">
-              <Topbar />
-            </div>
+            <Topbar />
 
             {/* Page Content */}
-            <main className="flex-1 px-10 py-8">
-              <div className="max-w-6xl mx-auto">
+            <main className="flex-1 px-4 sm:px-8 lg:px-10 py-6 lg:py-8">
+              <div className="max-w-6xl mx-auto animate-fade-in">
                 {children}
               </div>
             </main>
@@ -46,6 +43,12 @@ export default function RootLayout({
           position="top-right"
           richColors
           closeButton
+          toastOptions={{
+            style: {
+              fontFamily: "'Inter', sans-serif",
+              borderRadius: "12px",
+            },
+          }}
         />
       </body>
     </html>
