@@ -1,27 +1,16 @@
-📄 VentureLens — VC Intelligence Interface
+VentureLens
+
+VC Intelligence Interface
+
 Overview
 
-VentureLens is a lightweight venture intelligence interface built using Next.js App Router and TypeScript.
+VentureLens is a lightweight venture intelligence interface built using Next.js (App Router) and TypeScript.
 
-The goal of this project is to simulate a VC research workflow where users can:
+The application simulates a VC research workflow, allowing users to explore a dataset of companies, enrich company information, organize companies into lists, and export structured data.
 
-Explore a dataset of companies
+The project focuses on clean architecture, structured state management, and professional SaaS-style UI design.
 
-Filter, sort, and paginate results
-
-View detailed company profiles
-
-Enrich company data via an API
-
-Create lists of companies
-
-Save searches
-
-Add notes
-
-Export lists in CSV and JSON formats
-
-This project focuses on clean UI, structured data flow, and frontend system design.
+This implementation strictly follows the assignment requirements and uses the provided mock dataset.
 
 Tech Stack
 
@@ -31,17 +20,17 @@ Language: TypeScript
 
 Styling: Tailwind CSS
 
-State: React Hooks
+State Management: React Hooks
 
 Persistence: localStorage (client-side)
 
-API: Custom API route (/api/enrich)
+API: Custom API Route (/api/enrich)
 
-Notifications: Sonner (toast system)
+Notifications: Toast-based feedback system
 
-All requirements from the assignment were implemented using the specified stack.
+No external backend or database is used, as per assignment scope.
 
-Features
+Core Features
 1. Companies Explorer
 
 Search by company name
@@ -52,27 +41,27 @@ Sort by name, industry, or location
 
 Pagination (5 companies per page)
 
-Clean table layout
+Dynamic routing for company profile pages
 
-Dynamic routing for individual company profiles
+Clean, structured table layout
 
-Dataset is based on the provided mock companies list as instructed.
+The explorer operates strictly on the provided mock dataset.
 
-2. Company Profile Page
+2. Company Profile
 
 Each company page includes:
 
 Overview section
 
-Notes section (persisted in localStorage)
+Notes section (persisted per company)
 
-Enrichment section (via API)
+Enrichment section (manual trigger)
 
 Add to List functionality
 
-Cached enrichment results per company
+Cached enrichment results (per company)
 
-Enrichment data is fetched only when the user clicks the "Enrich Company" button.
+Enrichment data is fetched only when the user explicitly clicks the "Enrich Company" button.
 
 3. Enrichment API
 
@@ -80,29 +69,27 @@ API Route:
 
 /api/enrich
 
-This route:
+The API:
 
-Accepts a company website
+Accepts a company website URL
 
 Fetches metadata
 
-Extracts signals (e.g. blog presence, changelog, etc.)
+Extracts structured signals
 
-Returns structured enrichment data
-
-Includes:
+Returns:
 
 Summary
 
 Derived signals
 
-Source URL
+Source reference
 
 Timestamp
 
-Enrichment results are cached per company.
+Results are cached in localStorage for performance and persistence.
 
-4. Lists System
+4. Lists Management
 
 Users can:
 
@@ -110,7 +97,7 @@ Create custom lists
 
 Add companies to lists
 
-Remove companies
+Remove companies from lists
 
 Persist lists in localStorage
 
@@ -120,62 +107,60 @@ CSV format
 
 JSON format
 
-Each list maintains references to company IDs.
+Each list stores company IDs referencing the dataset.
 
 5. Saved Searches
 
 Users can save filtered search states.
 
-Saved search includes:
+Each saved search stores:
 
-Search keyword
+Search query
 
 Industry filter
 
-Sort field
+Sort selection
 
-Search state is restored using URL query parameters.
+Saved searches restore state via URL query parameters.
 
 6. Dashboard
 
-Homepage includes:
+The homepage functions as a lightweight analytics dashboard displaying:
 
 Total Companies
 
 Total Lists
 
-Saved Searches count
+Saved Searches
 
-Enriched Companies count
+Enriched Companies
 
-Quick navigation buttons
+Quick navigation actions
 
-Designed as a lightweight SaaS-style dashboard.
+Designed with a SaaS-style layout using Sidebar + Topbar structure.
 
-UI / Design System
+UI Architecture
 
-The UI follows a structured SaaS layout:
+The UI follows a structured layout:
 
-Sidebar navigation
+Persistent Sidebar navigation
 
-Topbar with dynamic title
+Dynamic Topbar
 
 Card-based content containers
 
-Subtle shadows and borders
+Consistent spacing and typography
 
-Consistent spacing
-
-Toast notifications for actions
+Toast notifications for user actions
 
 Responsive layout
 
-All styling is built using Tailwind CSS.
+Styling is implemented entirely using Tailwind CSS.
 
-Folder Structure (Simplified)
+Folder Structure
 src/
  ├── app/
- │   ├── page.tsx                (Dashboard)
+ │   ├── page.tsx
  │   ├── companies/
  │   │    ├── page.tsx
  │   │    └── [id]/page.tsx
@@ -193,44 +178,40 @@ src/
      └── mockCompanies.ts
 Design Decisions
 
-Used localStorage instead of backend DB for fast prototyping.
+Used the provided mock dataset as required.
 
-Separated Server and Client components properly (App Router pattern).
+Kept enrichment logic within a controlled API route.
 
-Avoided unnecessary external libraries.
+Separated server and client components appropriately.
 
-Focused on clean UI and predictable state flow.
+Used localStorage for prototype-level persistence.
 
-Implemented reusable components (Card, layout structure).
+Maintained clear separation between UI components and data logic.
 
-How to Run
+Avoided unnecessary dependencies.
+
+Running the Project
+
+Install dependencies:
+
 npm install
+
+Run development server:
+
 npm run dev
 
-Then open:
+Open:
 
 http://localhost:3000
-Future Improvements
+Notes
 
-If extended further:
+The application is intentionally frontend-focused.
 
-Database persistence
+Data persistence is localStorage-based.
 
-Authentication system
-
-Real external enrichment service
-
-Role-based access
-
-Advanced filtering (multi-field)
-
-Dark mode toggle
-
-Real-time search API
+The dataset remains limited to the provided mock companies as per assignment requirements.
 
 Author
-
-Built by:
 
 Rishabh Khanna
 VentureLens — VC Intelligence Interface
