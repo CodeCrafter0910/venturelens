@@ -157,25 +157,32 @@ Responsive layout
 
 Styling is implemented entirely using Tailwind CSS.
 
-Folder Structure
+## Folder Structure
+
+```
 src/
- ├── app/
- │   ├── page.tsx
- │   ├── companies/
- │   │    ├── page.tsx
- │   │    └── [id]/page.tsx
- │   ├── lists/page.tsx
- │   ├── saved/page.tsx
- │   └── api/enrich/route.ts
- │
- ├── components/
- │   ├── Sidebar.tsx
- │   ├── Topbar.tsx
- │   ├── CompanyProfileClient.tsx
- │   └── Card.tsx
- │
- └── lib/
-     └── mockCompanies.ts
+├── app/
+│   ├── page.tsx
+│   ├── companies/
+│   │   ├── page.tsx
+│   │   └── [id]/page.tsx
+│   ├── lists/
+│   │   └── page.tsx
+│   ├── saved/
+│   │   └── page.tsx
+│   └── api/
+│       └── enrich/
+│           └── route.ts
+│
+├── components/
+│   ├── Sidebar.tsx
+│   ├── Topbar.tsx
+│   ├── CompanyProfileClient.tsx
+│   └── Card.tsx
+│
+└── lib/
+    └── mockCompanies.ts
+```
 Design Decisions
 
 Used the provided mock dataset as required.
